@@ -26,6 +26,7 @@ public class UsersController {
         try {
             return usersManager.get();
         } catch(Exception ex) { // Ensure no stacktrace leaks make it out
+        	System.out.println(ex);
            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -24,7 +24,7 @@ public class UsersService {
     }
 
     @Async
-    public CompletableFuture<User[]> getUnRegistered() {
+    public CompletableFuture<User[]> getUnregistered() {
         User[] users = restTemplate.getForObject( "/unregisteredusers", UnregisteredUserImpl[].class);
         return CompletableFuture.completedFuture(users);
     }

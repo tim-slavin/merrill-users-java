@@ -5,7 +5,14 @@ public class UnregisteredUserImpl extends UserImpl implements UnregisteredUser {
 	private String registrationIdGeneratedTime;
 	
 	public UnregisteredUserImpl() {
-		// TODO Auto-generated constructor stub
+		super();
+	}
+	
+	protected UnregisteredUserImpl(UnregisteredUser otherUser) {
+		super(otherUser);
+		
+		this.registrationId = otherUser.getRegistrationId();
+		this.registrationIdGeneratedTime = otherUser.getRegistrationIdGeneratedTime();
 	}
 
 	@Override
@@ -27,5 +34,9 @@ public class UnregisteredUserImpl extends UserImpl implements UnregisteredUser {
 	public void setRegistrationIdGeneratedTime(String registrationIdGeneratedTime) {
 		this.registrationIdGeneratedTime = registrationIdGeneratedTime;
 	}
-
+	
+	@Override
+	public User copy() {
+		return new UnregisteredUserImpl((UnregisteredUserImpl) this);
+	}
 }

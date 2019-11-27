@@ -11,9 +11,24 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	private String zipCode;
 	private String country;
 	private boolean disclaimerAccepted;
-
+	
 	public RegisteredUserImpl() {
-		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	protected RegisteredUserImpl(RegisteredUser otherUser) {
+		super(otherUser);
+		
+		this.firstName = otherUser.getFirstName();
+		this.lastName = otherUser.getLastName();
+		this.company = otherUser.getCompany();
+		this.organizationType = otherUser.getOrganizationType();
+		this.phone = otherUser.getPhone();
+		this.city = otherUser.getCity();
+		this.state = otherUser.getState();
+		this.zipCode = otherUser.getZipCode();
+		this.country = otherUser.getCountry();
+		this.disclaimerAccepted = otherUser.isDisclaimerAccepted();
 	}
 
 	@Override
@@ -114,6 +129,11 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	@Override
 	public void setDisclaimerAccepted(boolean disclaimerAccepted) {
 		this.disclaimerAccepted = disclaimerAccepted;
+	}
+	
+	@Override
+	public User copy() {
+		return new RegisteredUserImpl((RegisteredUserImpl) this);
 	}
 
 }

@@ -1,13 +1,23 @@
 package com.merrill.users.model;
 
-public class UserImpl implements User {
+public abstract class UserImpl implements User {
 	private String id;
 	private String emailAddress;
 	private String languageCode;
 	private String[] projectIds;
 	
 	public UserImpl() {
-		// TODO Auto-generated constructor stub
+		super();
+	}
+	
+	protected UserImpl(User otherUser) {
+		super();
+		
+		this.id = otherUser.getId();
+		this.emailAddress = otherUser.getEmailAdddress();
+		this.languageCode = otherUser.getLanguageCode();
+		
+		this.projectIds = otherUser.getProjectIds();
 	}
 
 	@Override
@@ -49,5 +59,7 @@ public class UserImpl implements User {
 	public void setProjectIds(String[] projectIds) {
 		this.projectIds = projectIds;
 	}
+	
+	public abstract User copy();
 
 }

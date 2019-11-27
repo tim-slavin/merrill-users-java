@@ -1,7 +1,11 @@
 package com.merrill.users.managers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -24,23 +28,58 @@ public class UsersManager {
 
     public List<User> get() throws InterruptedException, ExecutionException {
         CompletableFuture<User[]> registeredUsersFuture = usersService.getRegistered();
-        //CompletableFuture<User[]> unRegisteredFuture = usersService.getUnRegistered();
+        CompletableFuture<User[]> unregisteredUsersFuture = usersService.getUnregistered();
         CompletableFuture<Membership[]> membershipsFuture = membershipsService.get();
 
-        //CompletableFuture.allOf(registeredFuture, unRegisteredFuture, membershipsFuture).join();
-        CompletableFuture.allOf(registeredUsersFuture, membershipsFuture).join();
+        CompletableFuture.allOf(registeredUsersFuture, unregisteredUsersFuture, membershipsFuture).join();
 
-        User[] registeredUsers = registeredUsersFuture.get();
-        //UnRegisteredUser[] unRegisteredUsers = unRegisteredFuture.get();
-       //ProjectMembership[] memberships = membershipsFuture.get();
+        List<User> registeredUsers = Arrays.asList(registeredUsersFuture.get());
+        List<User> unregisteredUsers = Arrays.asList(unregisteredUsersFuture.get());
+        List<Membership> memberships = Arrays.asList(membershipsFuture.get());
 
-        // HashMap<String, Set<String>> userMemberships = getUserProjects(memberships);
+        HashMap<String, Set<String>> userProjects = getProjects(memberships);
 
-        //List<User> users = new ArrayList<>();
-        //users.addAll(registeredUsers)
-        //users.addAll(getUsers(registeredUsers, userMemberships));
-        //users.addAll(getUsers(unRegisteredUsers, userMemberships));
-
-        return Arrays.asList(registeredUsers);
+        List<User> users = new ArrayList<>();
+        users.addAll(registeredUsers);
+        users.addAll(unregisteredUsers);
+        
+        return attachProjects(users, userProjects);
+    }
+    
+    private HashMap<String, Set<String>> getProjects(List<Membership> memberships) {
+    	HashMap<String, Set<String>> projects = new HashMap<String, Set<String>>();
+    	
+    	for (Membership membership: memberships) {
+    		String projectId = membership.getProjectId();
+    		String userId = membership.getUserId();
+    		
+    		Set<String> userProjectIds = projects.get(userId);
+    		if (userProjectIds == null) {
+    			Set<String> projectIds = new HashSet<String>();
+    			projectIds.add(projectId);
+    			
+    			projects.put(userId, projectIds);
+    		} else {
+    			userProjectIds.add(projectId);
+    		}
+    	}
+    	
+    	return projects;
+    }
+    
+    private List<User> attachProjects(List<User> users, HashMap<String, Set<String>> projects) {
+    	List<User> usersWithProjects = new ArrayList<User>();
+    	
+    	for (User originalUser: users) {
+    		User user = originalUser.copy();
+    		
+    		Set<String> userProjectIds = projects.getOrDefault(user.getId(), new HashSet<String>());
+    		user.setProjectIds(userProjectIds.toArray(new String[0]));
+    		
+    		
+			usersWithProjects.add(user);
+    	}
+    	
+    	return usersWithProjects;
     }
 }
