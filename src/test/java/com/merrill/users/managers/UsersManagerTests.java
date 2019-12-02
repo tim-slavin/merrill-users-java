@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -145,7 +146,8 @@ public class UsersManagerTests {
         RegisteredUser user2 = (RegisteredUser) users.get(1);
         UnregisteredUser user3 =(UnregisteredUser) users.get(2);
         UnregisteredUser user4 = (UnregisteredUser) users.get(3);
-
+        
+        assertThat(users, IsCollectionWithSize.hasSize(4));
         assertThat(user1.getProjectIds(), is(new String[]{"22", "26"}));
         assertThat(user2.getProjectIds(), is(new String[]{}));
         assertThat(user3.getProjectIds(), is(new String[]{"1", "23"}));
