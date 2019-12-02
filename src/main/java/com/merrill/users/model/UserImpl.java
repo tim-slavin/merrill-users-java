@@ -14,7 +14,7 @@ public abstract class UserImpl implements User {
 		super();
 		
 		this.id = otherUser.getId();
-		this.emailAddress = otherUser.getEmailAdddress();
+		this.emailAddress = otherUser.getEmailAddress();
 		this.languageCode = otherUser.getLanguageCode();
 		
 		this.projectIds = otherUser.getProjectIds();
@@ -31,7 +31,7 @@ public abstract class UserImpl implements User {
 	}
 
 	@Override
-	public String getEmailAdddress() {
+	public String getEmailAddress() {
 		return emailAddress;
 	}
 

@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,9 +20,9 @@ public class UsersController {
     private UsersManager usersManager;
 
 //    @ApiOperation(value = "Get all registered and un-registered users with their project assignments")
-//    @GetMapping(value = "/users", produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/users")
+    @GetMapping(value = "/users", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+//    @RequestMapping("/users")
     public List<User> get() {
         try {
             return usersManager.get();
@@ -29,6 +30,5 @@ public class UsersController {
         	System.out.println(ex);
            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 }

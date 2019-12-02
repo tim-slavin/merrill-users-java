@@ -4,7 +4,7 @@ public interface User {
 	public String getId();
 	public void setId(String id);
 	
-	public String getEmailAdddress();
+	public String getEmailAddress();
 	public void setEmailAddress(String emailAddress);
 	
 	public String getLanguageCode();
